@@ -1,0 +1,83 @@
+//get all the elements
+ const clear = 
+   document.getElementById('clear');
+const date = 
+   document.getElementById('date');
+const list = 
+   document.getElementById('list');
+const input = 
+   document.getElementById('input');
+const btn = 
+   document.getElementById('btn');
+   
+
+// Classes names
+const CHECK = "fa-check-circle";
+const UNCHECK = "fa-circle-thin";
+const LINE_THROUGH = "text-decoration-line-through";
+// Show todays date
+const today = new Date();
+const options = { weekday: 'long', month: 'long', day: 'numeric' };
+date.innerHTML = today.toLocaleDateString('en-US', options);
+
+
+
+//get the value by click the btn
+btn.addEventListener('click', () =>{
+  const value = input.value;
+  value.value = "";
+  addTodo(value, false, false);
+  
+});
+
+//add todo
+function addTodo(toDo, done){
+  const DONE = done ? CHECK : UNCHECK;
+  const LINE = done? LINE_THROUGH : "";
+  const item = `<li class="item">
+                    <i class="fa co ${DONE}" job="complete" ></i>
+                    <p class="text ${LINE}">${toDo}</p>
+                    <i class="fas fa-trash" job="delete" ></i>
+                  </li>
+                `;
+    
+    const position = "beforeend";
+    
+    list.insertAdjacentHTML(position, item);
+    
+}
+
+// complete to do
+function completeToDo(element){
+    element.classList.toggle(CHECK);
+    element.classList.toggle(UNCHECK);
+    element.parentNode.querySelector(".text").classList.toggle(LINE_THROUGH);
+    
+  //  LIST[element.id].done = LIST[element.id].done ? false : true;
+}
+
+// remove to do
+function removeToDo(element){
+    element.parentNode.parentNode.removeChild(element.parentNode);
+    
+   // LIST[element.id].trash = true;
+}
+
+clear.addEventListener('click', function (element) {
+  element.parentNode.remove(element.parentNode);
+    
+  
+});
+// target the items created dynamically
+
+list.addEventListener("click", function(event){
+    const element = event.target; // return the clicked element inside list
+    const elementJob = element.attributes.job.value; // complete or delete
+    
+    if(elementJob == "complete"){
+        completeToDo(element);
+    }else if(elementJob == "delete"){
+        removeToDo(element);
+    }
+})
+
